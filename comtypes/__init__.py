@@ -372,7 +372,7 @@ class _cominterface_meta(type):
 
                     try:
                         result = self.Item(*args)
-                    except COMError, err:
+                    except (COMError, err) as err:
                         (hresult, text, details) = err.args
                         if hresult == -2147352565:  # DISP_E_BADINDEX
                             raise IndexError("invalid index")
@@ -391,7 +391,7 @@ class _cominterface_meta(type):
                     "Attempt 'self.Item[index] = value'"
                     try:
                         self.Item[index] = value
-                    except COMError, err:
+                    except (COMError, err) as err:
                         (hresult, text, details) = err.args
                         if hresult == -2147352565:  # DISP_E_BADINDEX
                             raise IndexError("invalid index")
@@ -574,7 +574,7 @@ class _cominterface_meta(type):
             for itf in self.mro()[1:-1]:
                 result += len(itf.__dict__["_methods_"])
             return result
-        except KeyError, err:
+        except (KeyError, err) as err:
             (name,) = err.args
             if name == "_methods_":
                 raise TypeError("baseinterface '%s' has no _methods_" % itf.__name__)
